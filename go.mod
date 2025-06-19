@@ -1,11 +1,11 @@
 module go.bug.st/serial
 
-go 1.17
+go 1.24.1
 
 require (
-	github.com/creack/goselect v0.1.2
-	github.com/stretchr/testify v1.8.4
-	golang.org/x/sys v0.19.0
+	github.com/creack/goselect v0.1.3
+	github.com/stretchr/testify v1.10.0
+	golang.org/x/sys v0.33.0
 )
 
 require (
