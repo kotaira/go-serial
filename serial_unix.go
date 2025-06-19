@@ -11,6 +11,7 @@ package serial
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -212,7 +213,7 @@ func (port *unixPort) GetModemStatusBits() (*ModemStatusBits, error) {
 }
 
 func nativeOpen(portName string, mode *Mode) (*unixPort, error) {
-	h, err := unix.Open(portName, unix.O_RDWR|unix.O_NOCTTY|unix.O_NDELAY, 0)
+	h, err := unix.Open(filepath.Join(devFolder, portName), unix.O_RDWR|unix.O_NOCTTY|unix.O_NDELAY, 0)
 	if err != nil {
 		switch err {
 		case unix.EBUSY:
@@ -308,8 +309,6 @@ func nativeGetPortsList() ([]string, error) {
 			continue
 		}
 
-		portName := devFolder + "/" + f.Name()
-
 		// Check if serial port is real or is a placeholder serial port "ttySxx" or "ttyHSxx"
 		if strings.HasPrefix(f.Name(), "ttyS") || strings.HasPrefix(f.Name(), "ttyHS") {
 			port, err := nativeOpen(portName, &Mode{})
@@ -321,7 +320,7 @@ func nativeGetPortsList() ([]string, error) {
 		}
 
 		// Save serial port in the resulting list
-		ports = append(ports, portName)
+		ports = append(ports, f.Name())
 	}
 
 	return ports, nil
