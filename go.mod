@@ -1,4 +1,4 @@
-module go.bug.st/serial
+module github.com/kotaira/go-serial
 
 go 1.24.1
 
